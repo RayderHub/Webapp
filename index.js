@@ -117,15 +117,33 @@ const tcpServer = net.createServer((socket) => {
     });
 });
 
-const HTTP_PORT = process.env.PORT || 80;
+const HTTP_PORT = process.env.PORT || 3000;
 const TCP_PORT = process.env.TCP_PORT || 6061;
 
-const server = app.listen(HTTP_PORT, () => {
-    console.log(`Servidor backend ejecutándose en el puerto ${HTTP_PORT}`);
-});
+let server, tcp;
 
-const tcp = tcpServer.listen(TCP_PORT, () => {
-    console.log(`Servidor Socket TCP ejecutándose en el puerto ${TCP_PORT}`);
-});
+if (require.main === module) {
+    server = app.listen(HTTP_PORT, () => {
+        console.log(`Servidor backend ejecutándose en el puerto ${HTTP_PORT}`);
+    });
 
-module.exports = { app, server, tcp };
+    tcp = tcpServer.listen(TCP_PORT, () => {
+        console.log(`Servidor Socket TCP ejecutándose en el puerto ${TCP_PORT}`);
+    });
+}
+
+module.exports = {
+    app,
+    get server() {
+        if (!server && require.main !== module) {
+            server = app.listen(HTTP_PORT);
+        }
+        return server;
+    },
+    get tcp() {
+        if (!tcp && require.main !== module) {
+            tcp = tcpServer.listen(TCP_PORT);
+        }
+        return tcp;
+    }
+};

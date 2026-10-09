@@ -1,4 +1,4 @@
-# P1IntdOps - API REST con Pipeline CI/CD Automatizado
+﻿# WebApp - API REST .NET con Pipeline CI/CD Automatizado
 
 **Proyecto Integrador Parcial 1: Pipeline CI/CD Automatizado para API REST**  
 **Universidad Tecnológica de Querétaro (UTEQ)**  
@@ -6,21 +6,22 @@
 **Asignatura:** Gestión de Software  
 **Alumno:** Job De La Vega Villalobos  
 **Matrícula:** 2023371157 | **Grupo:** IDGS14  
-**GitHub:** [https://github.com/RayderErizo/P1IntdOps](https://github.com/RayderErizo/P1IntdOps)  
+**GitHub:** [https://github.com/RayderHub/Webapp](https://github.com/RayderHub/Webapp)  
 **Docker Hub:** `raydererizo/webapp`  
 **Servidor AWS EC2:** `http://3.21.103.18/api/health`
 
 ---
 
 ## 🏛 Arquitectura del Sistema
-- **Backend Framework:** Node.js + Express.js
-- **Base de Datos:** SQLite3 (Persistencia local en `database.sqlite`)
+- **Backend Framework:** ASP.NET Core (.NET 10 SDK)
+- **Base de Datos:** SQLite con Entity Framework Core (`webapp.db`)
 - **Protocolos Soportados:** 
-  - HTTP REST (Puerto 80)
+  - HTTP REST (Puerto 8080 interno, mapeado al puerto 80)
   - TCP Sockets Concurrente (Puerto 6061)
-- **Contenedorización:** Docker (`node:18-alpine`) publicado en Docker Hub (`raydererizo/webapp`)
+- **Pruebas Automatizadas:** xUnit + FluentAssertions (25 pruebas unitarias)
+- **Contenedorización:** Docker (`mcr.microsoft.com/dotnet/aspnet:10.0`) publicado en Docker Hub (`raydererizo/webapp`)
 - **Infraestructura Cloud:** AWS EC2 (Ubuntu Server) en `3.21.103.18`
-- **Automatización CI/CD:** GitHub Actions (Pruebas unitarias, validación de cobertura >70%, empaquetado y despliegue continuo vía SSH con llave PEM)
+- **Automatización CI/CD:** GitHub Actions (Compilación, pruebas automáticas xUnit, empaquetado Docker y despliegue continuo vía SSH)
 
 ---
 
@@ -28,83 +29,68 @@
 
 | Método | Ruta | Descripción |
 |---|---|---|
-| `GET` | `/usuarios` | Consulta el listado completo de usuarios registrados |
-| `POST` | `/usuarios` | Registra un nuevo usuario (`nombre`, `rol_id`) |
-| `GET` | `/usuarios/:id` | Consulta la información de un usuario específico por su ID |
-| `PUT` | `/usuarios/:id` | Modifica los datos de un usuario existente |
-| `DELETE` | `/usuarios/:id` | Elimina un usuario por su ID |
-| `GET` | `/api/health` | Monitoreo del estado del servicio (Healthcheck) |
-| `GET` | `/backup` | Crea una copia de respaldo física de la base de datos |
-| `DELETE` | `/vaciar` | Trunca/elimina todos los registros de usuarios y roles |
+| `GET` | `/api/health` | Healthcheck que valida disponibilidad y conectividad del servicio |
+| `GET` | `/api/products` | Consulta el catálogo completo de productos |
+| `GET` | `/api/products/{id}` | Consulta un producto específico por ID |
+| `POST` | `/api/products` | Registra un nuevo producto |
+| `PUT` | `/api/products/{id}` | Modifica los datos de un producto |
+| `DELETE` | `/api/products/{id}` | Elimina un producto por ID |
+| `GET` | `/api/categories` | Consulta todas las categorías |
+| `GET` | `/api/categories/{id}` | Consulta una categoría por ID |
+| `POST` | `/api/categories` | Registra una nueva categoría |
+| `PUT` | `/api/categories/{id}` | Modifica una categoría |
+| `DELETE` | `/api/categories/{id}` | Elimina una categoría por ID |
+| `POST` | `/api/backup` | Genera una copia de respaldo física de la base de datos |
+| `POST` | `/api/vaciar` | Elimina todos los registros de la base de datos |
 
 ---
 
 ## 🔌 Protocolo TCP Sockets (Puerto 6061)
 
-El servidor socket concurrente escucha en el puerto `6061` y procesa los siguientes comandos en texto plano:
-1. **Insertar registro:**
-   ```text
-   {insert:{"nombre":"Estudiante Job De La Vega","rol_id":1}}
-   ```
-2. **Consultar registro por ID:**
-   ```text
-   {get:1}
-   ```
-3. **Comando no reconocido:** Retorna mensaje de error.
-
-Para ejecutar la prueba hacia el servidor:
-```bash
-node cliente-socket.js
-```
+El servidor socket concurrente corre en segundo plano en el puerto `6061`:
+1. **Insertar categoría:** `{insert:{"name":"Electrónica"}}`
+2. **Consultar categoría por ID:** `{get:1}`
 
 ---
 
 ## 🚀 Comandos Locales (Desarrollo)
 
-### 1. Instalación de Dependencias
+### Ejecutar Pruebas Automatizadas (xUnit)
 ```bash
-npm install
+dotnet test WebApp.Tests/WebApp.Tests.csproj
 ```
 
-### 2. Ejecutar Pruebas Automatizadas y Cobertura (Jest)
-Valida que se cumpla la política de calidad (mínimo 70% de cobertura en líneas y declaraciones):
+### Ejecutar la Aplicación Localmente
 ```bash
-npm run test:coverage
+dotnet run --project WebApp.csproj
 ```
 
-### 3. Levantar la API en Modo Desarrollo
-```bash
-npm start
-```
-
-### 4. Construcción y Ejecución con Docker
+### Construcción y Ejecución en Docker
 ```bash
 docker build -t raydererizo/webapp:latest .
-docker run -d -p 80:80 -p 6061:6061 --name webapp-container raydererizo/webapp:latest
+docker run -d -p 80:8080 -p 6061:6061 --name webapp-container raydererizo/webapp:latest
 ```
 
 ---
 
 ## ⚙ Configuración de Secretos en GitHub (Actions Secrets)
 
-Para habilitar el despliegue automático hacia AWS EC2, se configuran los siguientes secretos en el repositorio GitHub (**Settings > Secrets and variables > Actions > New repository secret**):
-
-| Secreto | Descripción | Valor Configurado |
+| Secreto | Descripción | Valor |
 |---|---|---|
-| `DOCKER_USERNAME` | Nombre de usuario en Docker Hub | `raydererizo` |
-| `DOCKER_PASSWORD` | Token de acceso personal (PAT) de Docker Hub | `dckr_pat_...` |
-| `EC2_HOST` | Dirección IP pública de la instancia EC2 | `3.21.103.18` |
-| `EC2_USER` | Usuario de conexión SSH | `ubuntu` |
+| `DOCKER_USERNAME` | Usuario de Docker Hub | `raydererizo` |
+| `DOCKER_PASSWORD` | Access Token de Docker Hub | `dckr_pat_...` |
+| `EC2_HOST` | IP pública de la instancia AWS EC2 | `3.21.103.18` |
+| `EC2_USER` | Usuario SSH de Ubuntu Server | `ubuntu` |
 | `EC2_SSH_KEY` | Contenido de la llave privada `Pablo.pem` | `-----BEGIN RSA PRIVATE KEY-----...` |
 
 ---
 
 ## 🔄 Flujo del Pipeline CI/CD (.github/workflows/main.yml)
 
-Al realizar un `git push` a la rama `main`:
-1. **Checkout:** Descarga el código fuente más reciente.
-2. **Node Environment:** Configura Node.js versión 18.
-3. **Dependencies:** Instala dependencias con `npm install`.
-4. **Testing & Coverage:** Corre Jest (`npm run test:coverage`). Si no supera el 70% de cobertura o falla un test, el pipeline se aborta.
-5. **Docker Login & Push:** Autentica y publica la imagen en Docker Hub (`raydererizo/webapp:latest` y hash SHA).
-6. **SSH Deploy en AWS EC2:** Conecta a la instancia `3.21.103.18`, descarga la imagen actualizada, detiene la versión previa y levanta el contenedor mapeando los puertos 80 y 6061.
+Al hacer `git push` a `main`:
+1. **Checkout:** Descarga el código.
+2. **Setup .NET:** Configura .NET 10 SDK.
+3. **Restore:** Restaura paquetes NuGet.
+4. **Test:** Corre la suite de pruebas unitarias xUnit (`dotnet test`). Si una prueba falla, el flujo se detiene inmediatamente.
+5. **Docker Login & Push:** Autentica y sube la imagen a Docker Hub (`raydererizo/webapp:latest`).
+6. **SSH Deploy:** Se conecta a AWS EC2, descarga la última imagen y levanta el contenedor con los puertos 80 y 6061.

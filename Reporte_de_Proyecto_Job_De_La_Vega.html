@@ -1,0 +1,354 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Proyecto - Job De La Vega Villalobos</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+        @page {
+            size: letter;
+            margin: 25mm 20mm 25mm 20mm;
+        }
+
+        body {
+            font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            color: #222;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f8;
+        }
+
+        .page {
+            background: #fff;
+            width: 216mm;
+            min-height: 279mm;
+            margin: 20px auto;
+            padding: 25mm 22mm;
+            box-sizing: border-box;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: relative;
+            page-break-after: always;
+        }
+
+        @media print {
+            body {
+                background: none;
+            }
+            .page {
+                margin: 0;
+                box-shadow: none;
+                width: auto;
+                min-height: auto;
+                padding: 0;
+                page-break-after: always;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+
+        .page-num {
+            position: absolute;
+            bottom: 15mm;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 11pt;
+            color: #444;
+        }
+
+        /* Portada */
+        .cover {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            text-align: center;
+            padding-top: 40mm;
+        }
+
+        .cover h1 {
+            font-size: 19pt;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 25px;
+            color: #111;
+        }
+
+        .cover h2 {
+            font-size: 13pt;
+            font-weight: 400;
+            margin: 12px 0;
+            color: #333;
+        }
+
+        .cover .meta-info {
+            margin-top: 30px;
+            font-size: 12pt;
+            color: #222;
+        }
+
+        .cover .meta-info p {
+            margin: 10px 0;
+        }
+
+        /* Contenido */
+        h2.doc-title {
+            text-align: center;
+            font-size: 15pt;
+            font-weight: 700;
+            border-bottom: 1.5px solid #222;
+            padding-bottom: 8px;
+            margin-bottom: 25px;
+            color: #111;
+        }
+
+        h3.section-title {
+            font-size: 13pt;
+            font-weight: 700;
+            margin-top: 22px;
+            margin-bottom: 12px;
+            color: #1a1a1a;
+        }
+
+        h4.subsection-title {
+            font-size: 11.5pt;
+            font-weight: 700;
+            margin-top: 18px;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+
+        p {
+            font-size: 11pt;
+            text-align: justify;
+            margin-bottom: 14px;
+            line-height: 1.55;
+        }
+
+        ul {
+            font-size: 11pt;
+            margin-bottom: 14px;
+            padding-left: 25px;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+
+        a {
+            color: #0d6efd;
+            text-decoration: underline;
+            word-break: break-all;
+        }
+
+        .code-box {
+            background-color: #0d1117;
+            color: #58a6ff;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 9.5pt;
+            padding: 12px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 14px 0;
+            border: 1px solid #30363d;
+        }
+
+        .code-box pre {
+            margin: 0;
+            color: #c9d1d9;
+            white-space: pre-wrap;
+        }
+
+        .terminal-preview {
+            background-color: #0c0c0c;
+            color: #cccccc;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 9pt;
+            padding: 14px;
+            border: 1px solid #444;
+            border-radius: 4px;
+            line-height: 1.4;
+            margin: 12px 0;
+        }
+
+        .terminal-preview .green {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .caption {
+            font-size: 9.5pt;
+            font-style: italic;
+            text-align: center;
+            color: #555;
+            margin-top: 6px;
+            margin-bottom: 16px;
+        }
+
+        .print-btn-bar {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: #24292e;
+            padding: 10px 18px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        .print-btn {
+            background: #2ea44f;
+            color: white;
+            border: none;
+            padding: 9px 18px;
+            font-size: 13pt;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .print-btn:hover {
+            background: #2c974b;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="print-btn-bar no-print">
+        <button class="print-btn" onclick="window.print()">🖨️ Imprimir / Guardar como PDF</button>
+    </div>
+
+    <!-- PÁGINA 1: PORTADA -->
+    <div class="page">
+        <div class="cover">
+            <h1>UNIVERSIDAD TECNOLÓGICA DE QUERÉTARO</h1>
+            <h2>Ingeniería en Desarrollo y Gestión de Software</h2>
+            <h2>Asignatura: Gestión de Software</h2>
+            
+            <div class="meta-info">
+                <p><strong>Alumno:</strong> Job De La Vega Villalobos</p>
+                <p><strong>Matrícula:</strong> 2023371157</p>
+                <p><strong>Grupo:</strong> IDGS14</p>
+                <p style="margin-top: 30px;"><strong>Fecha:</strong> 08 de Octubre 2026</p>
+            </div>
+        </div>
+        <div class="page-num">1</div>
+    </div>
+
+    <!-- PÁGINA 2: INTRODUCCIÓN -->
+    <div class="page">
+        <h2 class="doc-title">Proyecto Integrador Parcial 1: Pipeline CI/CD Automatizado para API REST</h2>
+
+        <h3 class="section-title">Introducción</h3>
+        <p>
+            En la industria actual del desarrollo de software, la entrega de valor constante y libre de errores es un pilar fundamental para el éxito de cualquier proyecto tecnológico. La adopción de la cultura DevOps y, en específico, la implementación de flujos de Integración Continua (CI) y Despliegue Continuo (CD), ha transformado la manera en que los equipos de ingeniería construyen, prueban y liberan aplicaciones. El presente proyecto integrador documenta el diseño, configuración y puesta en marcha de un pipeline CI/CD completamente automatizado para una API RESTful desarrollada en ASP.NET Core (.NET 10 SDK) con persistencia en SQLite mediante Entity Framework Core y un servidor concurrente TCP Sockets, con el objetivo de eliminar los procesos manuales y garantizar que cada cambio en el código fuente sea evaluado rigurosamente antes de llegar a un entorno de producción.
+        </p>
+        <p>
+            La Integración Continua (CI) permite que múltiples desarrolladores integren su código en un repositorio compartido de manera frecuente. En este proyecto, dicha integración se gestiona mediante GitHub Actions, una plataforma que actúa como orquestador para interceptar los eventos de tipo push en la rama principal. Al detectar un cambio, el sistema ejecuta de forma automática una suite de pruebas unitarias construida con xUnit y FluentAssertions. Este paso es crítico, ya que asegura que las nuevas implementaciones no rompan la funcionalidad existente. Solo si el código aprueba esta barrera de calidad, el flujo avanza hacia la fase de empaquetado, donde la aplicación se compila y encapsula en una imagen de contenedor mediante Docker y se publica en un registro de artefactos (Docker Hub).
+        </p>
+        <p>
+            Por su parte, el Despliegue Continuo (CD) cierra el ciclo de vida del desarrollo al llevar el artefacto empaquetado directamente hacia la infraestructura en la nube sin intervención humana. En esta implementación se aprovisionó una instancia de Ubuntu Server en Amazon Web Services (AWS EC2). A través de conexiones seguras mediante
+        </p>
+        <div class="page-num">2</div>
+    </div>
+
+    <!-- PÁGINA 3: CONTINUACIÓN INTRODUCCIÓN Y RESULTADOS -->
+    <div class="page">
+        <p>
+            el protocolo SSH, el pipeline se autentica en el servidor, descarga la imagen más reciente, detiene el servicio anterior y levanta la nueva versión mapeada al puerto 80, gestionando las credenciales sensibles mediante secretos. De esta manera, el proyecto demuestra el dominio técnico sobre herramientas de backend y cloud computing, y consolida un entorno de trabajo auditable y listo para escalar.
+        </p>
+
+        <h3 class="section-title">Resultados</h3>
+        <p>
+            El proceso de desarrollo y automatización se ejecutó en tres fases principales, cumpliendo con los requerimientos técnicos de infraestructura y calidad de código.
+        </p>
+
+        <h4 class="subsection-title">Enlace al repositorio (GitHub Actions y Código):</h4>
+        <ul>
+            <li><a href="https://github.com/RayderHub/Webapp" target="_blank">https://github.com/RayderHub/Webapp</a></li>
+            <li><a href="https://github.com/RayderHub/Webapp/blob/main/.github/workflows/main.yml" target="_blank">https://github.com/RayderHub/Webapp/blob/main/.github/workflows/main.yml</a></li>
+            <li><a href="https://github.com/RayderHub/Webapp/actions" target="_blank">https://github.com/RayderHub/Webapp/actions</a></li>
+        </ul>
+
+        <h4 class="subsection-title">URL Pública de la API (AWS EC2):</h4>
+        <ul>
+            <li><a href="http://3.21.103.18/api/health" target="_blank">http://3.21.103.18/api/health</a></li>
+        </ul>
+        <div class="page-num">3</div>
+    </div>
+
+    <!-- PÁGINA 4: FASE 1 Y FASE 2 -->
+    <div class="page">
+        <h3 class="section-title">Fase 1: Desarrollo y calidad de código</h3>
+        <p>
+            Se finalizó la construcción de la API REST incorporando 13 endpoints funcionales que administran Productos, Categorías, respaldos de base de datos (`/api/backup`), limpieza (`/api/vaciar`), monitoreo (`/api/health`) y un socket TCP concurrente en el puerto 6061, superando el mínimo requerido. Para garantizar la fiabilidad del software, se implementaron 25 pruebas unitarias automatizadas con xUnit y FluentAssertions.
+        </p>
+
+        <div class="terminal-preview">
+Test run for WebApp.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+
+<span class="green">Passed!</span>  - Failed: 0, <span class="green">Passed: 25</span>, Skipped: 0, Total: 25, Duration: 1 s - WebApp.Tests.dll (net10.0)
+        </div>
+        <div class="caption">Figura 1. Ejecución exitosa de la suite completa de 25 pruebas unitarias con xUnit y .NET 10 SDK validando endpoints HTTP y lógica de negocio.</div>
+
+        <h3 class="section-title">Fase 2: Integración Continua (CI)</h3>
+        <p>
+            Se configuró el archivo <code>main.yml</code> en el repositorio para orquestar el flujo de GitHub Actions. El pipeline descargó el código, configuró el SDK de .NET 10, restauró paquetes, ejecutó las 25 pruebas unitarias y, al ser exitosas, construyó la imagen a partir del Dockerfile. La imagen fue publicada en Docker Hub (<code>raydererizo/webapp</code>) etiquetada con la versión <code>latest</code> y el hash del commit para mantener la trazabilidad.
+        </p>
+        <div class="page-num">4</div>
+    </div>
+
+    <!-- PÁGINA 5: FASE 3 Y CONCLUSIÓN -->
+    <div class="page">
+        <div class="caption">Figura 2. Resumen de ejecución exitosa del workflow en GitHub Actions, con todos los pasos de construcción y publicación completados sin errores.</div>
+
+        <h3 class="section-title">Fase 3: Despliegue Continuo (CD) en AWS</h3>
+        <p>
+            Utilizando llaves <code>.pem</code> gestionadas exclusivamente a través de GitHub Secrets, el pipeline se conectó a la instancia EC2, descargó la imagen actualizada y reinició el contenedor mapeando el tráfico del servidor al puerto 80 (hacia el puerto interno 8080 del contenedor) y al puerto 6061 para sockets TCP.
+        </p>
+
+        <div class="code-box">
+<pre>{
+  "statusCode": 200,
+  "data": {
+    "status": "OK",
+    "mensaje": "API funcionando y conectada Job De La Vega"
+  }
+}</pre>
+        </div>
+        <div class="caption">Figura 3. Petición HTTP a la dirección IP pública de la instancia AWS EC2, que muestra que el despliegue automático fue exitoso y la API responde correctamente en la nube.</div>
+
+        <h3 class="section-title">Conclusión</h3>
+        <p>
+            La implementación de este pipeline CI/CD demuestra de manera práctica cómo las prácticas de DevOps reducen los riesgos asociados con la liberación de software. Al delegar la ejecución de pruebas, el empaquetado en contenedores Docker y el despliegue en AWS EC2 a un orquestador como GitHub Actions, se elimina la posibilidad de fallos por error humano en tareas repetitivas. Esto permite enfocar el desarrollo en la lógica de negocio, con la certeza de que el pipeline rechazará cualquier código que no cumpla con los estándares de calidad definidos.
+        </p>
+        <p>
+            Dominar estas arquitecturas resulta fundamental para la ingeniería de software moderna. La separación de responsabilidades, el manejo seguro de credenciales mediante secretos y el uso de imágenes inmutables favorecen la disponibilidad del servicio y la escalabilidad del sistema a futuro. Este proyecto consolida las bases técnicas necesarias para gestionar entornos de producción reales.
+        </p>
+        <div class="page-num">5</div>
+    </div>
+
+    <!-- PÁGINA 6: FUENTES DE INFORMACIÓN -->
+    <div class="page">
+        <h3 class="section-title">Fuentes de información</h3>
+        <p>
+            1. Amazon Web Services. (2026). <em>¿Qué es la integración continua y el despliegue continuo (CI/CD)?</em> AWS.<br>
+            <a href="https://aws.amazon.com/es/devops/continuous-integration/" target="_blank">https://aws.amazon.com/es/devops/continuous-integration/</a>
+        </p>
+        <p>
+            2. Docker Documentation. (2026). <em>Docker overview.</em> Docker Docs.<br>
+            <a href="https://docs.docker.com/get-started/overview/" target="_blank">https://docs.docker.com/get-started/overview/</a>
+        </p>
+        <p>
+            3. GitHub Docs. (2026). <em>Understanding GitHub Actions.</em> GitHub Documentation.<br>
+            <a href="https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions" target="_blank">https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions</a>
+        </p>
+        <div class="page-num">6</div>
+    </div>
+
+</body>
+</html>
