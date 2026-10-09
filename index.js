@@ -65,7 +65,7 @@ app.delete('/usuarios/:id', (req, res) => {
 
 // 6. Endpoint de Monitoreo / Healthcheck
 app.get('/api/health', (req, res) => {
-    sendResponse(res, 200, { status: "OK", mensaje: "prueba de esta burger nose" });
+    sendResponse(res, 201, { status: "OK up", mensaje: "prueba de esta burger nose nose2" });
 });
 
 // 7. Endpoint de Respaldo de Base de Datos
