@@ -1,0 +1,9 @@
+node_modules/
+coverage/
+database.sqlite
+*.sqlite
+npm-debug.log
+.env
+*.pem
+P1IntdOps-main/
+*.pdf
