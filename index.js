@@ -30,7 +30,7 @@ app.get('/usuarios', (req, res) => {
 // 2. Crear un nuevo usuario
 app.post('/usuarios', (req, res) => {
     const { nombre, rol_id } = req.body;
-    db.run("INSERT INTO usuarios (nombre, rol_id) VALUES (?, ?)", [nombre, rol_id], function(err) {
+    db.run("INSERT INTO usuarios (nombre, rol_id) VALUES (?, ?)", [nombre, rol_id], function (err) {
         if (err) return sendResponse(res, 500, err.message);
         sendResponse(res, 201, { id: this.lastID, nombre, rol_id });
     });
@@ -48,7 +48,7 @@ app.get('/usuarios/:id', (req, res) => {
 // 4. Actualizar usuario por ID
 app.put('/usuarios/:id', (req, res) => {
     const { nombre, rol_id } = req.body;
-    db.run("UPDATE usuarios SET nombre = ?, rol_id = ? WHERE id = ?", [nombre, rol_id, req.params.id], function(err) {
+    db.run("UPDATE usuarios SET nombre = ?, rol_id = ? WHERE id = ?", [nombre, rol_id, req.params.id], function (err) {
         if (err) return sendResponse(res, 500, err.message);
         if (this.changes === 0) return sendResponse(res, 404, "Usuario no encontrado");
         sendResponse(res, 200, { mensaje: "Usuario actualizado exitosamente" });
@@ -57,7 +57,7 @@ app.put('/usuarios/:id', (req, res) => {
 
 // 5. Eliminar usuario por ID
 app.delete('/usuarios/:id', (req, res) => {
-    db.run("DELETE FROM usuarios WHERE id = ?", req.params.id, function(err) {
+    db.run("DELETE FROM usuarios WHERE id = ?", req.params.id, function (err) {
         if (err) return sendResponse(res, 500, err.message);
         sendResponse(res, 200, { eliminados: this.changes });
     });
@@ -65,7 +65,7 @@ app.delete('/usuarios/:id', (req, res) => {
 
 // 6. Endpoint de Monitoreo / Healthcheck
 app.get('/api/health', (req, res) => {
-    sendResponse(res, 200, { status: "OK", mensaje: "API funcionando y conectada Job De La Vega" });
+    sendResponse(res, 200, { status: "OK", mensaje: "prueba de esta burger" });
 });
 
 // 7. Endpoint de Respaldo de Base de Datos
@@ -96,14 +96,14 @@ const tcpServer = net.createServer((socket) => {
             const elementoJson = comando.substring(8, comando.length - 1);
             try {
                 const { nombre, rol_id } = JSON.parse(elementoJson);
-                db.run("INSERT INTO usuarios (nombre, rol_id) VALUES (?, ?)", [nombre, rol_id], function(err) {
+                db.run("INSERT INTO usuarios (nombre, rol_id) VALUES (?, ?)", [nombre, rol_id], function (err) {
                     if (err) socket.write(`Error DB: ${err.message}\n`);
                     else socket.write(`Usuario insertado via Socket con ID: ${this.lastID}\n`);
                 });
             } catch (error) {
                 socket.write("Error: Formato JSON inválido.\n");
             }
-        } 
+        }
         else if (comando.startsWith('{get:') && comando.endsWith('}')) {
             const id = comando.substring(5, comando.length - 1);
             db.get("SELECT * FROM usuarios WHERE id = ?", [id], (err, row) => {
